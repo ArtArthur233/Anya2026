@@ -208,8 +208,14 @@ const questions = [
 ];
 
 let i=0;
+let bgMusic;
 
 function start(){
+ if (!bgMusic) {
+  bgMusic = new Audio("music.mp3");
+  bgMusic.loop = true;
+  bgMusic.play().catch(err => console.log("Audio play blocked or failed:", err));
+ }
  document.getElementById("welcome").classList.remove("active");
  document.getElementById("quiz").classList.add("active");
  show();
