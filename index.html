@@ -21,6 +21,8 @@ body{
   background: url("fond/1.png") no-repeat center center fixed;
   background-size: cover;
   overflow-x:hidden;
+  position: relative;
+  min-height: 100vh;
 }
 
 h1,h2{
@@ -28,16 +30,27 @@ h1,h2{
 }
 
 .screen{
-  display:none;
-  min-height:100vh;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-  text-align:center;
-  padding:20px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 5s ease-in-out;
 }
 
-.active{display:flex;}
+.active{
+  opacity: 1;
+  pointer-events: auto;
+}
 
 .card{
   background: rgba(255, 255, 255, 0.6);
