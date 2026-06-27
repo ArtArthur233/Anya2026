@@ -44,7 +44,7 @@ h1,h2{
   padding: 20px;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 5s ease-in-out;
+  transition: opacity 1.5s ease-in-out;
 }
 
 .active{
@@ -227,8 +227,10 @@ function start(){
   bgMusic.play().catch(err => console.log("Audio play blocked or failed:", err));
  }
  document.getElementById("welcome").classList.remove("active");
- document.getElementById("quiz").classList.add("active");
- show();
+ setTimeout(() => {
+  document.getElementById("quiz").classList.add("active");
+  show();
+ }, 3500);
 }
 
 function show(){
@@ -270,8 +272,10 @@ function check(idx,btn){
 
 function finish(){
  document.getElementById("quiz").classList.remove("active");
- document.getElementById("final").classList.add("active");
- document.getElementById("bar").style.width="100%";
+ setTimeout(() => {
+  document.getElementById("final").classList.add("active");
+  document.getElementById("bar").style.width="100%";
+ }, 3500);
 }
 
 function heart(){
