@@ -53,10 +53,10 @@ h1,h2{
 }
 
 .card{
-  background: rgba(255, 255, 255, 0.6);
+  background: linear-gradient(135deg, rgba(255, 225, 130, 0.5) 0%, rgba(255, 179, 198, 0.5) 100%);
   backdrop-filter: blur(0px);
   -webkit-backdrop-filter: blur(0px);
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.35);
   border-radius:24px;
   padding:24px;
   max-width:420px;
@@ -153,6 +153,40 @@ button{
   font-weight:700;
   color:var(--rose);
 }
+
+.option.correct{
+  background: #d4edda !important;
+  border-color: #28a745 !important;
+  color: #155724 !important;
+}
+
+.option:disabled{
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.option.correct:disabled{
+  opacity: 1;
+}
+
+#feedback{
+  display: none;
+  margin: 30px 0;
+  padding: 20px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.65);
+  color: var(--rose);
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1.5;
+  border: 1px dashed var(--rose);
+  animation: fade 0.3s ease;
+  transition: opacity 1.5s ease-in-out;
+}
+
+#quiz-content{
+  transition: opacity 1.0s ease-in-out;
+}
 </style>
 </head>
 
@@ -171,15 +205,18 @@ button{
 
 <!-- QUIZ -->
 <section id="quiz" class="screen">
-  <img src="images/scene1/1.gif" alt="Illustration" style="max-width: 280px; width: 100%; border-radius: 20px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(255, 77, 109, 0.25); object-fit: cover; transform: translateY(-40px);">
+  <img src="images/scene1/1.gif" alt="Illustration" style="max-width: 400px; width: 100%; border-radius: 20px; margin-bottom: 35px; box-shadow: 0 10px 30px rgba(255, 77, 109, 0.25); object-fit: cover; transform: translateY(-40px);">
   <div class="card">
-    <h2 id="qtext"></h2>
+    <div id="quiz-content">
+      <h2 id="qtext"></h2>
+      <div id="options"></div>
+    </div>
+
+    <div id="feedback"></div>
 
     <div class="progress">
       <div class="bar" id="bar"></div>
     </div>
-
-    <div id="options"></div>
 
     <p id="hint" style="color:#ff4d6d;display:none;margin-top:10px;">
       Essaie encore 💕
@@ -202,20 +239,20 @@ button{
 
 <script>
 const questions = [
- {q:"Comment dit-on «Привет» ?",o:["Bonjour","Merci","Au revoir"],c:0},
- {q:"Que signifie «Merci» ?",o:["Спасибо","Пожалуйста","Извините"],c:0},
- {q:"Que veut dire «кошка» ?",o:["Chien","Chat","Oiseau"],c:1},
- {q:"Jour après lundi ?",o:["Mardi","Mercredi","Dimanche"],c:0},
- {q:"Que signifie «счастье» ?",o:["Tristesse","Bonheur","Colère"],c:1},
- {q:"Complète : Tu es très ___",o:["jolie","triste","fatiguée"],c:0},
- {q:"Que veut dire «поцелуй» ?",o:["Cadeau","Baiser","Danse"],c:1},
- {q:"«Je t’aime» en russe ?",o:["Я тебя люблю","Спасибо","Привет"],c:0},
- {q:"Complète : Mon cœur bat pour ___",o:["toi","travail","chocolat"],c:0},
- {q:"Que signifie «навсегда» ?",o:["Toujours","Jamais","Parfois"],c:0},
- {q:"«fleurs» en français ?",o:["fleurs","étoiles","nuages"],c:0},
- {q:"Complète : Tu es mon ___",o:["amour","ami","chat"],c:0},
- {q:"Que signifie «любовь» ?",o:["Amour","Haïr","Rire"],c:0},
- {q:"Je t’aime ?",o:["Oui","Non","Peut-être"],c:0}
+ {q:"Comment dit-on «Привет» ?",o:["Bonjour","Merci","Au revoir"],c:0,comment:"« Привет » (Privet) veut dire Bonjour en russe ! 😊"},
+ {q:"Que signifie «Merci» ?",o:["Спасибо","Пожалуйста","Извините"],c:0,comment:"Exact ! « Спасибо » (Spassibo) veut dire Merci. Tu commences très bien ! 💖"},
+ {q:"Que veut dire «кошка» ?",o:["Chien","Chat","Oiseau"],c:1,comment:"Oui ! C'est le chat. Comme notre petit chat d'amour ! 🐱"},
+ {q:"Jour après lundi ?",o:["Mardi","Mercredi","Dimanche"],c:0,comment:"Bravo ! Après le lundi vient bien le mardi 📅"},
+ {q:"Que signifie «счастье» ?",o:["Tristesse","Bonheur","Colère"],c:1,comment:"Le bonheur... C'est exactement ce que je ressens à tes côtés ! 🥰"},
+ {q:"Complète : Tu es très ___",o:["jolie","triste","fatiguée"],c:0,comment:"Tu es la plus jolie fille du monde entier, mon cœur ! 😍"},
+ {q:"Que veut dire «поцелуй» ?",o:["Cadeau","Baiser","Danse"],c:1,comment:"« Поцелуй » (Potselouï) veut dire Baiser. Un gros bisou pour toi ! 😘"},
+ {q:"«Je t’aime» en russe ?",o:["Я тебя люблю","Спасибо","Привет"],c:0,comment:"« Я тебя люблю » (Ya tebya lyublyu). Je t'aime plus que tout ! ❤️"},
+ {q:"Complète : Mon cœur bat pour ___",o:["toi","travail","chocolat"],c:0,comment:"Il bat uniquement pour toi, et ce pour toujours... 💓"},
+ {q:"Que signifie «навсегда» ?",o:["Toujours","Jamais","Parfois"],c:0,comment:"« Навсегда » (Navsegda) signifie Pour toujours. Notre amour est éternel ♾️"},
+ {q:"«fleurs» en français ?",o:["fleurs","étoiles","nuages"],c:0,comment:"Des fleurs magnifiques pour la plus belle des fleurs 🌸"},
+ {q:"Complète : Tu es mon ___",o:["amour","ami","chat"],c:0,comment:"Tu es mon amour, ma vie, mon tout ! 💘"},
+ {q:"Que signifie «любовь» ?",o:["Amour","Haïr","Rire"],c:0,comment:"« Любовь » (Lyubov), c'est l'Amour, le vrai, celui qu'on partage 💝"},
+ {q:"Je t’aime ?",o:["Oui","Non","Peut-être"],c:0,comment:"Oui ! Un grand oui, je t'aime infiniment !!! ❤️❤️❤️"}
 ];
 
 let i=0;
@@ -231,7 +268,7 @@ function start(){
  setTimeout(() => {
   document.getElementById("quiz").classList.add("active");
   show();
- }, 3500);
+ }, 2000);
 }
 
 function show(){
@@ -253,17 +290,65 @@ function show(){
  ((i)/questions.length)*100+"%";
 
  document.getElementById("hint").style.display="none";
+ 
+ // Reset opacity and display of quiz-content
+ const quizContent = document.getElementById("quiz-content");
+ quizContent.style.display = "block";
+ quizContent.style.opacity = 0;
+ setTimeout(() => {
+  quizContent.style.opacity = 1;
+ }, 50);
 }
 
 function check(idx,btn){
  if(idx===questions[i].c){
   heart();
-  i++;
-  if(i>=questions.length){
-   finish();
-  }else{
-   setTimeout(show,400);
-  }
+  
+  // Highlight correct option and disable all options
+  btn.classList.add("correct");
+  document.querySelectorAll(".option").forEach(b => b.disabled = true);
+  
+  const quizContent = document.getElementById("quiz-content");
+  const feedback = document.getElementById("feedback");
+  
+  // Step 1: Fade out the quiz block
+  quizContent.style.opacity = 0;
+  
+  setTimeout(() => {
+   // Hide quiz content when faded out
+   quizContent.style.display = "none";
+   
+   // Setup the cute message in feedback block
+   feedback.textContent = questions[i].comment;
+   feedback.style.display = "block";
+   feedback.style.opacity = 0;
+   
+   // Step 2: Fade in the cute message
+   setTimeout(() => {
+    feedback.style.opacity = 1;
+   }, 50);
+   
+   // Step 3: Keep message visible for 3 seconds, then fade it out
+   setTimeout(() => {
+    feedback.style.opacity = 0;
+    
+    // Wait for the message fade-out animation to finish
+    setTimeout(() => {
+     feedback.style.display = "none";
+     
+     // Step 4: Advance index and transition to next question or finish
+     i++;
+     if(i>=questions.length){
+      finish();
+     }else{
+      show();
+     }
+    }, 400); // feedback fade-out duration
+    
+   }, 3000); // time the comment stays visible
+   
+  }, 400); // quiz-content fade-out duration
+  
  }else{
   btn.classList.add("shake");
   document.getElementById("hint").style.display="block";
@@ -276,7 +361,7 @@ function finish(){
  setTimeout(() => {
   document.getElementById("final").classList.add("active");
   document.getElementById("bar").style.width="100%";
- }, 3500);
+ }, 2000);
 }
 
 function heart(){
