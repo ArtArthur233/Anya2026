@@ -18,16 +18,9 @@
 body{
   margin:0;
   font-family:"DM Sans",sans-serif;
-  background: linear-gradient(-45deg,var(--pink1),var(--pink2),#fff0f5,var(--pink3));
-  background-size:400% 400%;
-  animation: bg 12s ease infinite;
+  background: url("fond/1.png") no-repeat center center fixed;
+  background-size: cover;
   overflow-x:hidden;
-}
-
-@keyframes bg{
-  0%{background-position:0% 50%}
-  50%{background-position:100% 50%}
-  100%{background-position:0% 50%}
 }
 
 h1,h2{
@@ -154,7 +147,7 @@ button{
 <section id="welcome" class="screen active">
   <div class="card fade">
     <h1>Joyeux anniversaire mon amour ❤️</h1>
-    <p>J'ai préparé un petit quiz pour toi...</p>
+    <p>I made this little game for you... can you find all the answers ? :O</p>
     <button class="btn" onclick="start()">Commencer 💖</button>
   </div>
 </section>
