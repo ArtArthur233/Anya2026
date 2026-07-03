@@ -1,18 +1,18 @@
 <!doctype html>
-<html lang="fr">
+<html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Quiz pour Anya 💖</title>
+<title>Quiz for Anya 💖</title>
 
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
 
 <style>
 :root{
-  --pink1:#ffe4ec;
-  --pink2:#ffd1dc;
-  --pink3:#ffb3c6;
-  --rose:#ff4d6d;
+  --pink1:#ffc506;
+  --pink2:#ffae00;
+  --pink3:#f54773;
+  --rose:#ff744d;
 }
 
 body{
@@ -65,6 +65,7 @@ h1,h2{
   box-shadow:0 20px 50px rgba(0,0,0,0.1);
   transform: translateY(40px);
   box-sizing: border-box;
+  transition: opacity 0.4s ease-in-out;
 }
 
 .card p{
@@ -223,9 +224,13 @@ button{
   right: 24px;
   bottom: 80px;
   border-radius: 20px;
-  color: #ffffffb5;
-  -webkit-text-stroke: 1px #ffffff;
-  text-shadow: 1px 1px 0 #ff4c0b62, -1px -1px 0 #ff540b6d, 1px -1px 0 #ff0b4869, -1px 1px 0 #ff890ba9;
+  color: #ffffff;
+  text-shadow: 
+    -1.5px -1.5px 0 var(--rose),  
+     1.5px -1.5px 0 var(--rose),
+    -1.5px  1.5px 0 var(--rose),
+     1.5px  1.5px 0 var(--rose),
+     2px 4px 10px rgba(121, 55, 0, 0.2);
   font-weight: 700;
   font-size: 18px;
   line-height: 1.5;
@@ -244,6 +249,21 @@ button{
 #qimg {
   transition: opacity 0.4s ease-in-out;
 }
+
+#qtext {
+  text-shadow: 
+    -1.5px -1.5px 0 #ff95005f,  
+     1.5px -1.5px 0 #00000000,
+    -1.5px  1.5px 0 #c5003573,
+     1.5px  1.5px 0 #9e043776,
+     2px 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.emoji {
+  text-shadow: none !important;
+  -webkit-text-stroke: none !important;
+  display: inline-block;
+}
 </style>
 </head>
 
@@ -255,9 +275,9 @@ button{
 <!-- WELCOME -->
 <section id="welcome" class="screen active">
   <div class="card fade">
-    <h1>Joyeux anniversaire mon amour ❤️</h1>
-    <p>I made this little game for you... can you find all the answers ? :O</p>
-    <button class="btn" onclick="start()">Commencer 💖</button>
+    <h1>Happy Birthday, my love !!❤️</h1>
+    <p>Sorry, I'm a little late.. but I made this little game for you ! Can you find all the answers ? :O</p>
+    <button class="btn" onclick="start()">Start 💖</button>
   </div>
 </section>
 
@@ -277,20 +297,20 @@ button{
     </div>
 
     <p id="hint" style="color:#ff4d6d;display:none;margin-top:10px;">
-      Essaie encore 💕
+      Try again 💕
     </p>
   </div>
 </section>
 
 <!-- FINAL -->
 <section id="final" class="screen">
-  <img src="images/scene2/1.gif" alt="Félicitations" style="max-width: 400px; width: 100%; border-radius: 20px; margin-bottom: 35px; box-shadow: 0 10px 30px rgba(255, 77, 109, 0.25); object-fit: cover; transform: translateY(-40px);">
+  <img src="images/scene2/1.gif" alt="Congratulations" style="max-width: 400px; width: 100%; border-radius: 20px; margin-bottom: 35px; box-shadow: 0 10px 30px rgba(255, 77, 109, 0.25); object-fit: cover; transform: translateY(-40px);">
   <div class="card fade">
-    <h1>🎉 Bravo mon amour 🎉</h1>
-    <p>Tu es la plus belle personne de ma vie ❤️</p>
+    <h1>🎉 Well done, my love 🎉</h1>
+    <p>You are the most beautiful person in my life ❤️</p>
 
     <div class="gift">
-      🎁 Code Ozon : <br><br>
+      🎁 Ozon Code: <br><br>
       <span style="letter-spacing:2px;">OZON-LOVE-2026</span>
     </div>
   </div>
@@ -298,20 +318,20 @@ button{
 
 <script>
 const questions = [
- {q:"Comment dit-on «Привет» ?",o:["Bonjour","Merci","Au revoir"],c:0,comment:"« Привет » (Privet) veut dire Bonjour en russe ! 😊",img:"images/scene1/1.gif"},
- {q:"Que signifie «Merci» ?",o:["Спасибо","Пожалуйста","Извините"],c:0,comment:"Exact ! « Спасибо » (Spassibo) veut dire Merci. Tu commences très bien ! 💖",img:"images/scene1/1.gif"},
- {q:"Que veut dire «кошка» ?",o:["Chien","Chat","Oiseau"],c:1,comment:"Oui ! C'est le chat. Comme notre petit chat d'amour ! 🐱",img:"images/scene1/1.gif"},
- {q:"Jour après lundi ?",o:["Mardi","Mercredi","Dimanche"],c:0,comment:"Bravo ! Après le lundi vient bien le mardi 📅",img:"images/scene1/1.gif"},
- {q:"Que signifie «счастье» ?",o:["Tristesse","Bonheur","Colère"],c:1,comment:"Le bonheur... C'est exactement ce que je ressens à tes côtés ! 🥰",img:"images/scene1/1.gif"},
- {q:"Complète : Tu es très ___",o:["jolie","triste","fatiguée"],c:0,comment:"Tu es la plus jolie fille du monde entier, mon cœur ! 😍",img:"images/5.png"},
- {q:"Que veut dire «поцелуй» ?",o:["Cadeau","Baiser","Danse"],c:1,comment:"« Поцелуй » (Potselouï) veut dire Baiser. Un gros bisou pour toi ! 😘",img:"images/6.png"},
- {q:"«Je t’aime» en russe ?",o:["Я тебя люблю","Спасибо","Привет"],c:0,comment:"« Я тебя люблю » (Ya tebya lyublyu). Je t'aime plus que tout ! ❤️",img:"images/7.png"},
- {q:"Complète : Mon cœur bat pour ___",o:["toi","travail","chocolat"],c:0,comment:"Il bat uniquement pour toi, et ce pour toujours... 💓",img:"images/8.png"},
- {q:"Que signifie «навсегда» ?",o:["Toujours","Jamais","Parfois"],c:0,comment:"« Навсегда » (Navsegda) signifie Pour toujours. Notre amour est éternel ♾️",img:"images/9.png"},
- {q:"«fleurs» en français ?",o:["fleurs","étoiles","nuages"],c:0,comment:"Des fleurs magnifiques pour la plus belle des fleurs 🌸",img:"images/10.png"},
- {q:"Complète : Tu es mon ___",o:["amour","ami","chat"],c:0,comment:"Tu es mon amour, ma vie, mon tout ! 💘",img:"images/11.png"},
- {q:"Que veut dire «любовь» ?",o:["Amour","Haïr","Rire"],c:0,comment:"« Любовь » (Lyubov), c'est l'Amour, le vrai, celui qu'on partage 💝",img:"images/12.png"},
- {q:"Je t’aime ?",o:["Oui","Non","Peut-être"],c:0,comment:"Oui ! Un grand oui, je t'aime infiniment !!! ❤️❤️❤️",img:"images/scene2/1.gif"}
+ {q:"How do you say «Привет»?",o:["Bonjour","Merci","Au revoir"],c:0,comment:"« Omg you really are french ! :O     Don't worry I know you have more french knowledge than that 😊",img:"images/scene1/1.gif"},
+ {q:"What does «Thank you» mean?",o:["Спасибо","Пожалуйста","Извините"],c:0,comment:"Correct! « Спасибо » (Spassibo) means Thank you. You are starting off great! 💖",img:"images/scene1/1.gif"},
+ {q:"What does «кошка» mean?",o:["Dog","Cat","Bird"],c:1,comment:"Yes! It means Cat. Just like our sweet little cat! 🐱",img:"images/scene1/1.gif"},
+ {q:"Day after Monday?",o:["Tuesday","Wednesday","Sunday"],c:0,comment:"Well done! Tuesday indeed comes after Monday 📅",img:"images/scene1/1.gif"},
+ {q:"What does «счастье» mean?",o:["Sadness","Happiness","Anger"],c:1,comment:"Happiness... That is exactly what I feel by your side! 🥰",img:"images/scene1/1.gif"},
+ {q:"Complete: You are very ___",o:["pretty","sad","tired"],c:0,comment:"You are the prettiest girl in the whole world, my sweetheart! 😍",img:"images/5.png"},
+ {q:"What does «поцелуй» mean?",o:["Gift","Kiss","Dance"],c:1,comment:"« Поцелуй » (Potselouï) means Kiss. A big kiss for you! 😘",img:"images/6.png"},
+ {q:"«I love you» in Russian?",o:["Я тебя люблю","Спасибо","Привет"],c:0,comment:"« Я тебя люблю » (Ya tebya lyublyu). I love you more than anything! ❤️",img:"images/7.png"},
+ {q:"Complete: My heart beats for ___",o:["you","work","chocolate"],c:0,comment:"It only beats for you, and it will forever... 💓",img:"images/8.png"},
+ {q:"What does «навсегда» mean?",o:["Forever","Never","Sometimes"],c:0,comment:"« Навсегда » (Navsegda) means Forever. Our love is eternal ♾️",img:"images/9.png"},
+ {q:"«flowers» in French?",o:["fleurs","étoiles","nuages"],c:0,comment:"Beautiful flowers for the most beautiful flower 🌸",img:"images/10.png"},
+ {q:"Complete: You are my ___",o:["love","friend","cat"],c:0,comment:"You are my love, my life, my everything! 💘",img:"images/11.png"},
+ {q:"What does «любовь» mean?",o:["Love","Hate","Laugh"],c:0,comment:"« Любовь » (Lyubov) means Love, the real one, the one we share 💝",img:"images/12.png"},
+ {q:"I love you?",o:["Yes","No","Maybe"],c:0,comment:"Yes! A big yes, I love you infinitely!!! ❤️❤️❤️",img:"images/scene2/1.gif"}
 ];
 
 let i=0;
@@ -335,6 +355,10 @@ imagesToPreload.forEach(src => {
   const img = new Image();
   img.src = src;
 });
+
+function wrapEmojis(text) {
+  return text.replace(/(\p{Emoji_Presentation}|\p{Emoji}\uFE0F)/gu, '<span class="emoji">$1</span>');
+}
 
 function start(){
  if (!bgMusic) {
@@ -378,6 +402,10 @@ function show(){
  const quizContent = document.getElementById("quiz-content");
  quizContent.style.visibility = "visible";
  quizContent.style.opacity = 0;
+ 
+ // Make sure card is visible
+ document.querySelector("#quiz .card").style.opacity = 1;
+ 
  setTimeout(() => {
   quizContent.style.opacity = 1;
  }, 50);
@@ -393,9 +421,11 @@ function check(idx,btn){
   const quizContent = document.getElementById("quiz-content");
   const feedback = document.getElementById("feedback");
   const qimg = document.getElementById("qimg");
+  const card = document.querySelector("#quiz .card");
   
-  // Step 1: Fade out the quiz block
+  // Step 1: Fade out the quiz block and the card background
   quizContent.style.opacity = 0;
+  card.style.opacity = 0;
   
   const isFirstThree = i < 3;
   
@@ -413,9 +443,10 @@ function check(idx,btn){
     
     // Step 2: Show the transition GIF for 2000ms before displaying comment
     setTimeout(() => {
-     feedback.textContent = questions[i].comment;
+     feedback.innerHTML = wrapEmojis(questions[i].comment);
      feedback.style.display = "flex";
      feedback.style.opacity = 0;
+     card.style.opacity = 1; // Fade in card with comment
      
      setTimeout(() => {
       feedback.style.opacity = 1;
@@ -425,6 +456,7 @@ function check(idx,btn){
      setTimeout(() => {
       feedback.style.opacity = 0;
       qimg.style.opacity = 0; // Fade out the transition gif
+      card.style.opacity = 0; // Fade out card
       
       setTimeout(() => {
        feedback.style.display = "none";
@@ -447,9 +479,10 @@ function check(idx,btn){
    setTimeout(() => {
     quizContent.style.visibility = "hidden";
     
-    feedback.textContent = questions[i].comment;
+    feedback.innerHTML = wrapEmojis(questions[i].comment);
     feedback.style.display = "flex";
     feedback.style.opacity = 0;
+    card.style.opacity = 1; // Fade in card with comment
     
     setTimeout(() => {
      feedback.style.opacity = 1;
@@ -458,6 +491,7 @@ function check(idx,btn){
     setTimeout(() => {
      feedback.style.opacity = 0;
      qimg.style.opacity = 0;
+     card.style.opacity = 0; // Fade out card
      
      setTimeout(() => {
       feedback.style.display = "none";
