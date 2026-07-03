@@ -246,10 +246,11 @@ button{
 }
 
 #qtext {
+  font-family: "DM Sans", sans-serif;
   text-shadow: 
     -1.5px -1.5px 0 #00000000,  
-     1.5px -1.5px 0 #ff0458b0,
-    -1.5px  1.5px 0 #ff00007d,
+     1.5px -1.5px 0 #ff6d04b0,
+    -1.5px  1.5px 0 #ff73007d,
      1.5px  1.5px 0 #ff7b009b,
      2px 2px 4px rgba(0, 0, 0, 0.4);
 }
@@ -331,6 +332,7 @@ const questions = [
 
 let i=0;
 let bgMusic;
+let hintTimeout;
 
 // Preload images to prevent lag
 const imagesToPreload = [
@@ -408,6 +410,8 @@ function show(){
 
 function check(idx,btn){
  if(idx===questions[i].c){
+  if (hintTimeout) clearTimeout(hintTimeout);
+  document.getElementById("hint").style.display = "none";
   const rect = btn.getBoundingClientRect();
   spawnFireworkShow(rect.left + rect.width / 2, rect.top + rect.height / 2);
   
@@ -448,7 +452,7 @@ function check(idx,btn){
       feedback.style.opacity = 1;
      }, 50);
      
-     // Step 3: Keep comment visible for 4000ms (since transition is slower), then fade it out
+     // Step 3: Keep comment visible for 7000ms (since transition is slower), then fade it out
      setTimeout(() => {
       feedback.style.opacity = 0;
       qimg.style.opacity = 0; // Fade out the transition gif
@@ -464,7 +468,7 @@ function check(idx,btn){
        }
       }, 1500); // matches the 1.5s slow transition duration
       
-     }, 4000);
+     }, 7000);
      
     }, 2000); // display duration of transition gif
     
@@ -499,14 +503,19 @@ function check(idx,btn){
       }
      }, 1500);
      
-    }, 4000);
+    }, 7000);
     
    }, 400);
   }
   
  }else{
   btn.classList.add("shake");
-  document.getElementById("hint").style.display="block";
+  const hint = document.getElementById("hint");
+  hint.style.display="block";
+  if (hintTimeout) clearTimeout(hintTimeout);
+  hintTimeout = setTimeout(() => {
+   hint.style.display = "none";
+  }, 2000);
   setTimeout(()=>btn.classList.remove("shake"),300);
  }
 }
