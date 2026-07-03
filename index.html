@@ -150,12 +150,12 @@ button{
   75%{transform:translateX(5px)}
 }
 
-.hearts{
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  overflow:hidden;
-  z-index:10;
+.fireworks-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 9999;
 }
 
 .leaves-container {
@@ -182,16 +182,11 @@ button{
   }
 }
 
-.heart{
-  position:absolute;
-  font-size:18px;
-  animation:float 4s linear forwards;
-  opacity:.6;
-}
-
-@keyframes float{
-  0%{transform:translateY(100vh) rotate(0)}
-  100%{transform:translateY(-10vh) rotate(360deg);opacity:0}
+.firework-particle {
+  position: absolute;
+  pointer-events: none;
+  will-change: transform, opacity;
+  font-size: 24px;
 }
 
 .gift{
@@ -252,10 +247,10 @@ button{
 
 #qtext {
   text-shadow: 
-    -1.5px -1.5px 0 #ff95005f,  
-     1.5px -1.5px 0 #00000000,
-    -1.5px  1.5px 0 #c5003573,
-     1.5px  1.5px 0 #9e043776,
+    -1.5px -1.5px 0 #00000000,  
+     1.5px -1.5px 0 #ff0458b0,
+    -1.5px  1.5px 0 #ff00007d,
+     1.5px  1.5px 0 #ff7b009b,
      2px 2px 4px rgba(0, 0, 0, 0.4);
 }
 
@@ -269,13 +264,13 @@ button{
 
 <body>
 
-<div class="hearts" id="hearts"></div>
+<div class="fireworks-container" id="fireworks-container"></div>
 <div class="leaves-container" id="leaves-container"></div>
 
 <!-- WELCOME -->
 <section id="welcome" class="screen active">
   <div class="card fade">
-    <h1>Happy Birthday, my love !!❤️</h1>
+    <h1>Happy Birthday !!❤️❤️</h1>
     <p>Sorry, I'm a little late.. but I made this little game for you ! Can you find all the answers ? :O</p>
     <button class="btn" onclick="start()">Start 💖</button>
   </div>
@@ -413,7 +408,8 @@ function show(){
 
 function check(idx,btn){
  if(idx===questions[i].c){
-  heart();
+  const rect = btn.getBoundingClientRect();
+  spawnFireworkShow(rect.left + rect.width / 2, rect.top + rect.height / 2);
   
   btn.classList.add("correct");
   document.querySelectorAll(".option").forEach(b => b.disabled = true);
@@ -523,17 +519,71 @@ function finish(){
  }, 2000);
 }
 
-function heart(){
- for(let k=0;k<8;k++){
-  let s=document.createElement("div");
-  s.className="heart";
-  s.textContent="💖";
-  s.style.left=Math.random()*100+"vw";
-  s.style.fontSize=(12+Math.random()*20)+"px";
-  s.style.animationDuration=(2+Math.random()*2)+"s";
-  document.getElementById("hearts").appendChild(s);
-  setTimeout(()=>s.remove(),4000);
- }
+function spawnFireworkShow(startX, startY) {
+  const container = document.getElementById("fireworks-container");
+  if (!container) return;
+
+  const emojis = ["💖", "❤️", "💘", "💓", "💝", "💕", "💞"];
+
+  function createExplosion(x, y) {
+    const particleCount = 18; // Slightly more particles for a nicer burst
+    for (let j = 0; j < particleCount; j++) {
+      const el = document.createElement("div");
+      el.className = "firework-particle";
+      el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      el.style.left = x + "px";
+      el.style.top = y + "px";
+      el.style.fontSize = (16 + Math.random() * 20) + "px";
+      container.appendChild(el);
+
+      const angle = Math.random() * Math.PI * 2;
+      const speed = 2 + Math.random() * 12; // Higher speed range for wider dispersion
+      let vx = Math.cos(angle) * speed;
+      let vy = Math.sin(angle) * speed - 0.5;
+
+      let px = x;
+      let py = y;
+      let opacity = 1;
+      let scale = 1;
+      const startTime = Date.now();
+      const duration = 1800 + Math.random() * 800; // Slower, longer animation lifetime (1.8s to 2.6s)
+
+      function update() {
+        const elapsed = Date.now() - startTime;
+        const progress = elapsed / duration;
+
+        if (progress >= 1) {
+          el.remove();
+          return;
+        }
+
+        // Low gravity and very low friction/drag to disperse widely across the screen
+        vy += 0.04;
+        vx *= 0.99;
+        vy *= 0.99;
+
+        px += vx;
+        py += vy;
+
+        opacity = 1 - progress;
+        scale = 1 - progress * 0.5;
+
+        el.style.transform = `translate3d(${px - x}px, ${py - y}px, 0) scale(${scale})`;
+        el.style.opacity = opacity;
+
+        requestAnimationFrame(update);
+      }
+      requestAnimationFrame(update);
+    }
+  }
+
+  const screenWidth = window.innerWidth;
+  const screenHeight = window.innerHeight;
+
+  // Single explosion at clicked coordinates with a 1-second delay
+  setTimeout(() => {
+    createExplosion(startX || screenWidth / 2, startY || screenHeight / 2 - 100);
+  }, 1000);
 }
 
 function spawnLeaf() {
