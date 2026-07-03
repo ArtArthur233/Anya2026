@@ -319,11 +319,11 @@ const questions = [
  {q:"What does «кошка» mean?",o:["Dog","Cat","Bird"],c:1,comment:"Yes! It means Cat. Just like our sweet little cat! 🐱",img:"images/scene1/1.gif"},
  {q:"Day after Monday?",o:["Tuesday","Wednesday","Sunday"],c:0,comment:"Well done! Tuesday indeed comes after Monday 📅",img:"images/scene1/1.gif"},
  {q:"What does «счастье» mean?",o:["Sadness","Happiness","Anger"],c:1,comment:"Happiness... That is exactly what I feel by your side! 🥰",img:"images/scene1/1.gif"},
- {q:"Complete: You are very ___",o:["pretty","sad","tired"],c:0,comment:"You are the prettiest girl in the whole world, my sweetheart! 😍",img:"images/5.png"},
- {q:"What does «поцелуй» mean?",o:["Gift","Kiss","Dance"],c:1,comment:"« Поцелуй » (Potselouï) means Kiss. A big kiss for you! 😘",img:"images/6.png"},
- {q:"«I love you» in Russian?",o:["Я тебя люблю","Спасибо","Привет"],c:0,comment:"« Я тебя люблю » (Ya tebya lyublyu). I love you more than anything! ❤️",img:"images/7.png"},
- {q:"Complete: My heart beats for ___",o:["you","work","chocolate"],c:0,comment:"It only beats for you, and it will forever... 💓",img:"images/8.png"},
- {q:"What does «навсегда» mean?",o:["Forever","Never","Sometimes"],c:0,comment:"« Навсегда » (Navsegda) means Forever. Our love is eternal ♾️",img:"images/9.png"},
+ {q:"Complete: You are very ___",o:["pretty","sad","tired"],c:0,comment:"You are the prettiest girl in the whole world, my sweetheart! 😍",img:"images/scene2/1.gif"},
+ {q:"What does «поцелуй» mean?",o:["Gift","Kiss","Dance"],c:1,comment:"« Поцелуй » (Potselouï) means Kiss. A big kiss for you! 😘",img:"images/scene2/1.gif"},
+ {q:"«I love you» in Russian?",o:["Я тебя люблю","Спасибо","Привет"],c:0,comment:"« Я тебя люблю » (Ya tebya lyublyu). I love you more than anything! ❤️",img:"images/scene2/1.gif"},
+ {q:"Complete: My heart beats for ___",o:["you","work","chocolate"],c:0,comment:"It only beats for you, and it will forever... 💓",img:"images/scene2/1.gif"},
+ {q:"What does «навсегда» mean?",o:["Forever","Never","Sometimes"],c:0,comment:"« Навсегда » (Navsegda) means Forever. Our love is eternal ♾️",img:"images/scene2/1.gif"},
  {q:"«flowers» in French?",o:["fleurs","étoiles","nuages"],c:0,comment:"Beautiful flowers for the most beautiful flower 🌸",img:"images/10.png"},
  {q:"Complete: You are my ___",o:["love","friend","cat"],c:0,comment:"You are my love, my life, my everything! 💘",img:"images/11.png"},
  {q:"What does «любовь» mean?",o:["Love","Hate","Laugh"],c:0,comment:"« Любовь » (Lyubov) means Love, the real one, the one we share 💝",img:"images/12.png"},
@@ -338,15 +338,11 @@ let hintTimeout;
 const imagesToPreload = [
   "images/scene1/1.gif",
   "images/transition1/1.gif",
-  "images/5.png",
-  "images/6.png",
-  "images/7.png",
-  "images/8.png",
-  "images/9.png",
+  "images/scene2/1.gif",
+  "images/transition2/1.gif",
   "images/10.png",
   "images/11.png",
-  "images/12.png",
-  "images/scene2/1.gif"
+  "images/12.png"
 ];
 imagesToPreload.forEach(src => {
   const img = new Image();
@@ -408,6 +404,40 @@ function show(){
  }, 50);
 }
 
+function showSpecialMessage() {
+  const qimg = document.getElementById("qimg");
+  const quizContent = document.getElementById("quiz-content");
+  const feedback = document.getElementById("feedback");
+  const card = document.querySelector("#quiz .card");
+  
+  // Hide image and question layout
+  qimg.style.display = "none";
+  quizContent.style.visibility = "hidden";
+  
+  // Set the message
+  feedback.innerHTML = wrapEmojis("When I'm close to you, our hearts beat as one. And when I close my eyes, I see us playing a sweet melody, guided by the rhythm of our hearts. This is... our dearest lullaby :> ❤️🎶");
+  feedback.style.display = "flex";
+  feedback.style.opacity = 0;
+  
+  // Fade in the card and the message
+  card.style.opacity = 1;
+  setTimeout(() => {
+    feedback.style.opacity = 1;
+  }, 50);
+  
+  // Display for 7 seconds, then fade out
+  setTimeout(() => {
+    feedback.style.opacity = 0;
+    card.style.opacity = 0;
+    
+    setTimeout(() => {
+      feedback.style.display = "none";
+      qimg.style.display = ""; // restore question image
+      show();
+    }, 1500);
+  }, 15000);
+}
+
 function check(idx,btn){
  if(idx===questions[i].c){
   if (hintTimeout) clearTimeout(hintTimeout);
@@ -427,15 +457,15 @@ function check(idx,btn){
   quizContent.style.opacity = 0;
   card.style.opacity = 0;
   
-  const isFirstThree = i < 3;
+  const hasTransition = i < 10;
   
-  if (isFirstThree) {
+  if (hasTransition) {
    // Smoothly fade out current image
    qimg.style.opacity = 0;
    
    setTimeout(() => {
     // Set to the transition gif and fade it back in
-    qimg.src = "images/transition1/1.gif";
+    qimg.src = i < 5 ? "images/transition1/1.gif" : "images/transition2/1.gif";
     qimg.style.opacity = 1;
     
     // Hide question content layout but keep size
@@ -453,20 +483,24 @@ function check(idx,btn){
      }, 50);
      
      // Step 3: Keep comment visible for 7000ms (since transition is slower), then fade it out
-     setTimeout(() => {
-      feedback.style.opacity = 0;
-      qimg.style.opacity = 0; // Fade out the transition gif
-      card.style.opacity = 0; // Fade out card
-      
       setTimeout(() => {
-       feedback.style.display = "none";
-       i++;
-       if(i>=questions.length){
-        finish();
-       }else{
-        show();
-       }
-      }, 1500); // matches the 1.5s slow transition duration
+       feedback.style.opacity = 0;
+       qimg.style.opacity = 0; // Fade out the transition gif
+       card.style.opacity = 0; // Fade out card
+       
+       setTimeout(() => {
+        feedback.style.display = "none";
+        i++;
+        if(i>=questions.length){
+         finish();
+        }else{
+         if (i === 5) {
+          showSpecialMessage();
+         } else {
+          show();
+         }
+        }
+       }, 1500); // matches the 1.5s slow transition duration
       
      }, 7000);
      
@@ -475,7 +509,7 @@ function check(idx,btn){
    }, 400); // duration of initial fade-out
    
   } else {
-   // Normal flow for indices >= 3 (feedback overlays the question's image)
+   // Normal flow for indices >= 10 (feedback overlays the question's image)
    setTimeout(() => {
     quizContent.style.visibility = "hidden";
     
