@@ -273,7 +273,7 @@ button{
   <div class="card fade">
     <h1>Happy Birthday !!❤️❤️</h1>
     <p>Sorry, I'm a little late.. but I made this little game for you ! Can you find all the answers ? :O</p>
-    <button class="btn" onclick="start()">Start 💖</button>
+    <button id="start-btn" class="btn" onclick="start()" style="opacity: 0; pointer-events: none; transition: opacity 1s;">Start 💖</button>
   </div>
 </section>
 
@@ -315,15 +315,15 @@ button{
 <script>
 const questions = [
  {q:"How do you say «Привет»?",o:["Bonjour","Merci","Au revoir"],c:0,comment:"« Omg you really are french ! :O     Don't worry I know you have more french knowledge than that 😊",img:"images/scene1/1.gif"},
- {q:"What does «Thank you» mean?",o:["Спасибо","Пожалуйста","Извините"],c:0,comment:"Correct! « Спасибо » (Spassibo) means Thank you. You are starting off great! 💖",img:"images/scene1/1.gif"},
- {q:"What does «кошка» mean?",o:["Dog","Cat","Bird"],c:1,comment:"Yes! It means Cat. Just like our sweet little cat! 🐱",img:"images/scene1/1.gif"},
- {q:"Day after Monday?",o:["Tuesday","Wednesday","Sunday"],c:0,comment:"Well done! Tuesday indeed comes after Monday 📅",img:"images/scene1/1.gif"},
- {q:"What does «счастье» mean?",o:["Sadness","Happiness","Anger"],c:1,comment:"Happiness... That is exactly what I feel by your side! 🥰",img:"images/scene1/1.gif"},
- {q:"Complete: You are very ___",o:["pretty","sad","tired"],c:0,comment:"You are the prettiest girl in the whole world, my sweetheart! 😍",img:"images/scene2/1.gif"},
- {q:"What does «поцелуй» mean?",o:["Gift","Kiss","Dance"],c:1,comment:"« Поцелуй » (Potselouï) means Kiss. A big kiss for you! 😘",img:"images/scene2/1.gif"},
- {q:"«I love you» in Russian?",o:["Я тебя люблю","Спасибо","Привет"],c:0,comment:"« Я тебя люблю » (Ya tebya lyublyu). I love you more than anything! ❤️",img:"images/scene2/1.gif"},
- {q:"Complete: My heart beats for ___",o:["you","work","chocolate"],c:0,comment:"It only beats for you, and it will forever... 💓",img:"images/scene2/1.gif"},
- {q:"What does «навсегда» mean?",o:["Forever","Never","Sometimes"],c:0,comment:"« Навсегда » (Navsegda) means Forever. Our love is eternal ♾️",img:"images/scene2/1.gif"},
+ {q:"What does «Thank you» mean?",o:["Спасибо","Пожалуйста","Извините"],c:0,comment:"Correct! « Спасибо » means Thank you. You are starting off great! 💖",img:"images/scene1/1.gif"},
+ {q:"What does «bird» mean?",o:["Chien","Chat","Oiseau"],c:2,comment:"Yes! Bird is Oiseau in french. You are as free as a bird my love ! ",img:"images/scene1/1.gif"},
+ {q:"Day after Tuesday?",o:["Vendredi","Dimanche","Mercredi"],c:2,comment:"Well done! Mercredi indeed comes after Mardi (or Tuesday in english) 📅",img:"images/scene1/1.gif"},
+ {q:"What does «счастье» mean?",o:["La tristesse","La joie","La colère"],c:1,comment:"La joie... That is exactly what I feel by your side! 🥰",img:"images/scene1/1.gif"},
+ {q:"Complete: You are very ___",o:["pretty","sad","tired"],c:0,comment:"You are the prettiest girl in the whole world, my love ! 😍",img:"images/scene2/1.gif"},
+ {q:"What does «Bisous» mean?",o:["Gift","Kiss","Dance"],c:1,comment:" Bisous Bisous Bisous ! I always wanna kiss you all over your face ! 😘",img:"images/scene2/1.gif"},
+ {q:"«There is one thing you should never doubt",o:["Ah ?? :O","I forgot","I know it well ))"],c:2,comment:" Я люблю тебя больше всего на свете !!! ..My Anyuta.. -3- <3 ❤️",img:"images/scene2/1.gif"},
+ {q:"Complete: When I look at you, I see my...",o:["future","reflection","friend"],c:0,comment:"I see a lifetime of happiness, smiles, and endless love with you... 👩‍❤️‍👨",img:"images/scene2/1.gif"},
+ {q:"What is my absolute favorite view?",o:["Your beautiful smile","The sunset","The ocean"],c:0,comment:"It's brighter than any star and warms my heart every single time! 😍",img:"images/scene2/1.gif"},
  {q:"«flowers» in French?",o:["fleurs","étoiles","nuages"],c:0,comment:"Beautiful flowers for the most beautiful flower 🌸",img:"images/10.png"},
  {q:"Complete: You are my ___",o:["love","friend","cat"],c:0,comment:"You are my love, my life, my everything! 💘",img:"images/11.png"},
  {q:"What does «любовь» mean?",o:["Love","Hate","Laugh"],c:0,comment:"« Любовь » (Lyubov) means Love, the real one, the one we share 💝",img:"images/12.png"},
@@ -435,7 +435,7 @@ function showSpecialMessage() {
       qimg.style.display = ""; // restore question image
       show();
     }, 1500);
-  }, 15000);
+  }, 20000);
 }
 
 function check(idx,btn){
@@ -689,6 +689,15 @@ for (let j = 0; j < 10; j++) {
     }, remainingTime * 1000);
   }, j * 150);
 }
+
+// Show start button after 5 seconds
+setTimeout(() => {
+  const startBtn = document.getElementById("start-btn");
+  if (startBtn) {
+    startBtn.style.opacity = "1";
+    startBtn.style.pointerEvents = "auto";
+  }
+}, 5000);
 </script>
 </body>
 </html>
