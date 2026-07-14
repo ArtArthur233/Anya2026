@@ -425,7 +425,41 @@ function showSpecialMessage() {
     feedback.style.opacity = 1;
   }, 50);
   
-  // Display for 7 seconds, then fade out
+  // Display for 20 seconds, then fade out
+  setTimeout(() => {
+    feedback.style.opacity = 0;
+    card.style.opacity = 0;
+    
+    setTimeout(() => {
+      feedback.style.display = "none";
+      qimg.style.display = ""; // restore question image
+      show();
+    }, 1500);
+  }, 20000);
+}
+
+function showSecondSpecialMessage() {
+  const qimg = document.getElementById("qimg");
+  const quizContent = document.getElementById("quiz-content");
+  const feedback = document.getElementById("feedback");
+  const card = document.querySelector("#quiz .card");
+  
+  // Hide image and question layout
+  qimg.style.display = "none";
+  quizContent.style.visibility = "hidden";
+  
+  // Set the message
+  feedback.innerHTML = wrapEmojis("Chaque jour à tes côtés est un cadeau précieux. Tu es ma plus belle évidence, mon coup de foudre et mon avenir. Je t'aime plus que tout au monde... 💖✨");
+  feedback.style.display = "flex";
+  feedback.style.opacity = 0;
+  
+  // Fade in the card and the message
+  card.style.opacity = 1;
+  setTimeout(() => {
+    feedback.style.opacity = 1;
+  }, 50);
+  
+  // Display for 20 seconds, then fade out
   setTimeout(() => {
     feedback.style.opacity = 0;
     card.style.opacity = 0;
@@ -496,6 +530,8 @@ function check(idx,btn){
         }else{
          if (i === 5) {
           showSpecialMessage();
+         } else if (i === 10) {
+          showSecondSpecialMessage();
          } else {
           show();
          }
