@@ -341,6 +341,7 @@ const imagesToPreload = [
   "images/scene2/1.gif",
   "images/transition2/1.gif",
   "images/scene3/1.gif",
+  "images/transition3/1.gif",
   "images/10.png",
   "images/11.png",
   "images/12.png"
@@ -492,7 +493,7 @@ function check(idx,btn){
   quizContent.style.opacity = 0;
   card.style.opacity = 0;
   
-  const hasTransition = i < 10;
+  const hasTransition = true;
   
   if (hasTransition) {
    // Smoothly fade out current image
@@ -500,7 +501,7 @@ function check(idx,btn){
    
    setTimeout(() => {
     // Set to the transition gif and fade it back in
-    qimg.src = i < 5 ? "images/transition1/1.gif" : "images/transition2/1.gif";
+    qimg.src = i < 5 ? "images/transition1/1.gif" : (i < 10 ? "images/transition2/1.gif" : "images/transition3/1.gif");
     qimg.style.opacity = 1;
     
     // Hide question content layout but keep size
