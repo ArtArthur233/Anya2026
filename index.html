@@ -18,11 +18,24 @@
 body{
   margin:0;
   font-family:"DM Sans",sans-serif;
-  background: url("fond/1.png") no-repeat center center fixed;
-  background-size: cover;
   overflow-x:hidden;
   position: relative;
   min-height: 100vh;
+}
+
+.bg-layer {
+  position: fixed;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: -2;
+  opacity: 0;
+  transition: opacity 1.5s ease-in-out;
+}
+
+.bg-layer.active {
+  opacity: 1;
 }
 
 h1,h2{
@@ -265,6 +278,10 @@ button{
 
 <body>
 
+<div id="bg-layer-1" class="bg-layer active" style="background-image: url('fond/1.png');"></div>
+<div id="bg-layer-2" class="bg-layer" style="background-image: url('fond/2.png');"></div>
+<div id="bg-layer-3" class="bg-layer" style="background-image: url('fond/3.png');"></div>
+
 <div class="fireworks-container" id="fireworks-container"></div>
 <div class="leaves-container" id="leaves-container"></div>
 
@@ -298,17 +315,19 @@ button{
   </div>
 </section>
 
+<!-- SLIDESHOW -->
+<section id="slideshow" class="screen">
+  <img id="slide-img" src="" alt="Memory" style="max-width: 400px; width: 100%; border-radius: 20px; margin-bottom: 35px; box-shadow: 0 10px 30px rgba(255, 77, 109, 0.25); object-fit: cover; transform: translateY(-40px); transition: opacity 2s ease-in-out; opacity: 0;">
+</section>
+
+<!-- BACKGROUND TRANSITION -->
+<section id="bg-transition-screen" class="screen"></section>
+
 <!-- FINAL -->
 <section id="final" class="screen">
-  <img src="images/scene2/1.gif" alt="Congratulations" style="max-width: 400px; width: 100%; border-radius: 20px; margin-bottom: 35px; box-shadow: 0 10px 30px rgba(255, 77, 109, 0.25); object-fit: cover; transform: translateY(-40px);">
-  <div class="card fade">
-    <h1>🎉 Well done, my love 🎉</h1>
-    <p>You are the most beautiful person in my life ❤️</p>
-
-    <div class="gift">
-      🎁 Ozon Code: <br><br>
-      <span style="letter-spacing:2px;">OZON-LOVE-2026</span>
-    </div>
+  <div class="card fade" style="max-width: 450px; width: 100%;">
+    <h1 style="font-family:'Playfair Display', serif; color: white; text-shadow: 1px 1px 3px rgba(255, 77, 109, 0.3); margin-bottom: 24px;">🎉 Well done, my love 🎉</h1>
+    <p id="final-text" style="font-size: 20px; line-height: 1.6; color: white; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15); min-height: 80px; margin: 0;"></p>
   </div>
 </section>
 
@@ -344,7 +363,10 @@ const imagesToPreload = [
   "images/transition3/1.gif",
   "images/10.png",
   "images/11.png",
-  "images/12.png"
+  "images/12.png",
+  "images/zfin/1.png",
+  "images/zfin/2.png",
+  "images/zfin/3.png"
 ];
 imagesToPreload.forEach(src => {
   const img = new Image();
@@ -592,11 +614,126 @@ function check(idx,btn){
  }
 }
 
+function startSlideshow() {
+  const slideshowSec = document.getElementById("slideshow");
+  const slideImg = document.getElementById("slide-img");
+  const images = [
+    "images/zfin/1.png",
+    "images/zfin/2.png",
+    "images/zfin/3.png"
+  ];
+  let currentIdx = 0;
+
+  slideshowSec.classList.add("active");
+
+  function nextSlide() {
+    if (currentIdx < images.length) {
+      slideImg.src = images[currentIdx];
+      
+      // Fade in (takes 2 seconds due to CSS transition: opacity 2s)
+      setTimeout(() => {
+        slideImg.style.opacity = "1";
+      }, 50);
+
+      // Stay fully visible for 5 seconds after fading in.
+      // So, start fading out after 2s (fade in) + 5s (visible) = 7s.
+      setTimeout(() => {
+        slideImg.style.opacity = "0";
+
+        // Wait for the fade out to complete (2 seconds) before loading the next image
+        setTimeout(() => {
+          currentIdx++;
+          nextSlide();
+        }, 2000);
+      }, 7000);
+
+    } else {
+      // Transition to background transition screen
+      slideshowSec.classList.remove("active");
+      setTimeout(() => {
+        startBgTransition();
+      }, 2000);
+    }
+  }
+
+  nextSlide();
+}
+
+function changeBackground(number) {
+  const nextLayer = document.getElementById(`bg-layer-${number}`);
+  
+  // Bring the next layer to the top of the background stack
+  document.querySelectorAll('.bg-layer').forEach(layer => {
+    if (layer === nextLayer) {
+      layer.style.zIndex = "-1";
+    } else {
+      layer.style.zIndex = "-2";
+    }
+  });
+
+  // Fade in the next layer
+  nextLayer.classList.add('active');
+
+  // Once the fade-in is complete (1.5s), remove active from other layers
+  setTimeout(() => {
+    document.querySelectorAll('.bg-layer').forEach(layer => {
+      if (layer !== nextLayer) {
+        layer.classList.remove('active');
+      }
+    });
+  }, 1500);
+}
+
+function startBgTransition() {
+  const bgTransitionSec = document.getElementById("bg-transition-screen");
+  bgTransitionSec.classList.add("active");
+
+  // We start on background 1. Transition to background 2 in 3 seconds.
+  setTimeout(() => {
+    changeBackground(2);
+
+    // Transition to background 3 in 3 seconds.
+    setTimeout(() => {
+      changeBackground(3);
+
+      // Transition to final screen in 3 seconds.
+      setTimeout(() => {
+        bgTransitionSec.classList.remove("active");
+        setTimeout(() => {
+          document.getElementById("final").classList.add("active");
+          document.getElementById("bar").style.width = "100%";
+          
+          // Wait for the final screen to fade in before starting typewriter effect
+          setTimeout(() => {
+            const msg = "But wait, my love... a second gift is coming for you...";
+            typeWriter("final-text", msg, 80);
+          }, 1500);
+        }, 2000);
+      }, 3000);
+      
+    }, 3000);
+
+  }, 3000);
+}
+
+function typeWriter(elementId, text, speed) {
+  let idx = 0;
+  const element = document.getElementById(elementId);
+  element.textContent = "";
+  function type() {
+    if (idx < text.length) {
+      element.textContent += text.charAt(idx);
+      idx++;
+      setTimeout(type, speed);
+    }
+  }
+  type();
+}
+
 function finish(){
  document.getElementById("quiz").classList.remove("active");
  setTimeout(() => {
-  document.getElementById("final").classList.add("active");
-  document.getElementById("bar").style.width="100%";
+  startSlideshow();
  }, 2000);
 }
 
